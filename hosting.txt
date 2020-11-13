@@ -1,0 +1,5 @@
+FIREBASE HOSTING
+Hosting URL: https://football-submit3.web.app
+
+GITHUB
+Pages: https://github.com/laoshee/tester.bayoe.github.io
