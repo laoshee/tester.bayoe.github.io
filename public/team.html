@@ -87,8 +87,9 @@
         // save.onclick = function() {
         // console.log("Tombol FAB di klik.");
         // }
-        var urlParams = new URLSearchParams(window.location.search);
-        var isFromSaved = urlParams.get("saved");
+        const btnSave = document.querySelector("#save");
+        const urlParams = new URLSearchParams(window.location.search);
+        const isFromSaved = urlParams.get("saved");
         // var btnSave = document.getElementById("save");
         var item = getTeamById();
         var save = document.getElementById("save");
@@ -102,12 +103,21 @@
         } else {
             var item = getTeamById();
         }
-        save.onclick = function() {
-          console.log("Tombol FAB di klik.");
-          item.then(function (squadsave) {
-              saveForLater(squadsave);
-          });
-      }
+     
+        function changeUrl () {
+          const urlParams = window.location.search;
+          const params = new URLSearchParams(urlParams.slice(1));
+          params.append('simpandata', true);
+          window.history.replaceState({}, '', `${location.pathname}?${params}`);
+        }
+
+        save.addEventListener('click', function () {
+          getTeamById().then(squadsave => {
+            saveForLater(squadsave);
+            changeUrl();
+          })
+          btnSave.style.display = 'none';
+        })
         
       });
     </script>

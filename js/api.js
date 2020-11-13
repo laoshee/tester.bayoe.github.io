@@ -4,6 +4,7 @@ const id_liga = 2002;
 // const enpoint_teamkompetitions = `${base_url}players/${id_liga}/matches?status=FINISHED`;
 const enpoint_kompetisi = `${base_url}competitions/${id_liga}/standings/`;
 const enpoint_team = `${base_url}teams/`;
+// const enpoint_schedule = `${base_url}teams/${id}/matches?status=SCHEDULED`;
  
 const fetchAPI = (url) => fetch(url, {
   headers: {
@@ -12,6 +13,7 @@ const fetchAPI = (url) => fetch(url, {
     'Connection' :'keep-alive',
   },
 })
+
   .then(status)
   .then(json)
   .catch(error);
@@ -259,3 +261,141 @@ const fetchAPI = (url) => fetch(url, {
         `;
     });
   }
+
+
+  function getTeamAll() {
+    if ('caches' in window) {
+      caches.match(enpoint_team).then((response) => {
+        if (response) {
+          response.json().then((data) => {
+            showTeams(data);
+          });
+        }
+      });
+    }
+   
+    fetchAPI(enpoint_team)
+      .then((data) => {   
+        showTeams(data);
+      })
+      .catch(error);
+  }
+
+  function showTeams(data) {
+    // console.log(data);
+    var elems = document.querySelectorAll('select');
+    var instances = M.FormSelect.init(elems);
+    let tampilHTML,tampildetail = '';
+    let standingElement = document.getElementById('team-content');
+    let loadingpage = document.getElementsByClassName('loading-page')[0].style.display = 'none';
+
+    data.teams.forEach((tampils) => {
+    // const newArray = data.standings[0].stage.concat(standing);
+      tampilHTML += `
+        <option value='${tampils.id}'>${tampils.name}</option>
+      `;
+    });
+  //   standingElement.innerHTML = tampilHTML;
+
+  // }
+    standingElement.innerHTML = `
+    <div class="card hoverable" style="padding-left: 20px; padding-right: 20px; margin-top: 30px;" >
+    <h5> <p class="center"> INFORMATION SCHEDULED TEAM </p></h5>
+    <label>SCHEDULED Select</label>
+    
+    <div class="input-field">
+      <select class="browser-default" onchange="changeFunc(value);">  
+        <option value="" selected="selected">Choose your option</option>  
+        ${tampilHTML}
+      </select>  
+    </div>
+    </div>
+
+    <div id="jadwal">
+    </div>
+    `;
+  }
+
+  function changeFunc($i) {
+    // alert($i);
+    return new Promise((resolve, reject) => {
+      let urlParams = new URLSearchParams(window.location.search);
+      let idParam = urlParams.get('id');
+      if ('caches' in window) {
+        caches.match(enpoint_team + $i +'/matches?status=SCHEDULED').then((response) => {
+          if (response) {
+            response.json().then((data) => {
+              TampilJadwal(data);
+              resolve(data);
+            });
+          }
+        });
+      }
+   
+      fetchAPI(enpoint_team + $i +'/matches?status=SCHEDULED')
+        .then((data) => {
+          TampilJadwal(data);
+          resolve(data);
+        })
+        .catch((error) => {
+          console.log(error);
+          let teamHTML = '';
+          teamHTML = '<h3 class="center bold deep-purple-text text-darken-4" style="margin-top: 5em;">Sorry Page error, please refresh page and check your network.</h3>';
+          document.getElementById('jadwal').innerHTML = teamHTML;
+        });
+    });
+  }
+
+  function TampilJadwal(data) {
+    // console.log(data);
+    let jadwalElement = document.getElementById('jadwal');
+    let loadingpage = document.getElementsByClassName('loading-page')[0].style.display = 'none';
+    const none = "No data";
+    let jadwalHTML = '';
+      jadwalElement.innerHTML = `
+        ${jadwalHTML}
+          <div class="col s12 m6 l7">
+          <div class="card hoverable" style="padding-left: 20px; padding-right: 20px; margin-top: 30px;">
+            <table class="striped">
+              <th class="center-align" colspan="2">
+              INFO ${data.filters.status ? data.filters.status : 'NO SCHEDULED'}
+              <th>
+              <tr>
+                <th>Away Team Name</th>
+                <td>${data.matches[0].awayTeam.name ? data.matches[0].awayTeam.name : none}</td>
+              </tr>
+              <tr>
+                <th>Home Team Name</th>
+                <td>${data.matches[0].homeTeam.name ? data.matches[0].homeTeam.name : none}</td>
+              </tr>
+              <tr>
+                <th>Start Date Session</th>
+                <td>${formatDate(data.matches[0].season.startDate) ? formatDate(data.matches[0].season.startDate) : none}</td>
+              </tr>
+              <tr>
+                <th>End Date Session</th>
+                <td>${formatDate(data.matches[0].season.endDate) ? formatDate(data.matches[0].season.endDate) : none}</td>
+              </tr>
+              <tr>
+                <th rowspan="3" >Competition</th>
+                <td>${data.matches[0].competition.name ? data.matches[0].competition.name : none}</td>
+              </tr>
+              <tr>
+              <td><img src="${data.matches[0].competition.area.ensignUrl.replace(/^http:\/\//i, 'https://') ? data.matches[0].competition.area.ensignUrl.replace(/^http:\/\//i, 'https://') : none }" width="50px" alt="badge" onerror="this.onerror=null;"/></td>
+              </tr>
+              <tr>
+                <td>${data.matches[0].competition.area.name ? data.matches[0].competition.area.name : none}</td>
+              </tr>
+              <tr>
+                <th>Status</th>
+                <td>${data.matches[0].status ? data.matches[0].status : none}</td>
+              </tr>
+              <tr>
+                <th>utc Date</th>
+                <td>${formatDate(data.matches[0].utcDate)}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        `;
+ }

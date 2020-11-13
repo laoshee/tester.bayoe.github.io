@@ -6,17 +6,18 @@ else
     console.log(`Workbox gagal dimuat`);
 
 workbox.precaching.precacheAndRoute([
-    'https://api.football-data.org/v2/competitions/2002/standings/',
+    'https://api.football-data.org/v2/',
     // { url: '/', revision: '1' },
-    { url: '/index.html', revision: '1' },
-    { url: '/team.html', revision: '1' },
-    { url: '/nav.html', revision: '1' },
+    { url: '/index.html', revision: '2' },
+    { url: '/team.html', revision: '2' },
+    { url: '/nav.html', revision: '2' },
+    { url: '/jadwal.html', revision: '1' },
     { url: '/pages/home.html', revision: '1' },
     { url: '/images/football-icon.png', revision: '1' },
     { url: '/css/materialize.min.css', revision: '1' },
     { url: '/js/materialize.min.js', revision: '1' },
     { url: '/js/vendor/idb.js', revision: '1' },
-    { url: '/js/api.js', revision: '1' },
+    { url: '/js/api.js', revision: '2' },
     { url: '/js/idbdatabase.js', revision: '1' },
     { url: '/js/nav.js', revision: '1' },
     { url: '/js/notofication.js', revision: '1' },
