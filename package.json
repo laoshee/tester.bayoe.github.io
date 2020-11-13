@@ -1,0 +1,15 @@
+{
+  "name": "football-information",
+  "version": "1.0.0",
+  "description": "Football Information on standings and team",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test spesification\"&& exit 1"
+  },
+  "author": "bayu sutrisno",
+  "license": "ISC",
+  "dependencies": {
+    "npm": "^6.14.8",
+    "web-push": "^3.4.4"
+  }
+}
