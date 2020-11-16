@@ -79,47 +79,39 @@
               console.error('Registrasi service worker gagal.', err);
             });
         }
-      document.addEventListener("DOMContentLoaded", function() {
-        // getSquadsTampil();
-        getTeamById();
-
-        // var save = document.getElementById("save");
-        // save.onclick = function() {
-        // console.log("Tombol FAB di klik.");
-        // }
-        const btnSave = document.querySelector("#save");
-        const urlParams = new URLSearchParams(window.location.search);
-        const isFromSaved = urlParams.get("saved");
-        // var btnSave = document.getElementById("save");
-        var item = getTeamById();
-        var save = document.getElementById("save");
-        if (isFromSaved) {
-            // Hide fab jika dimuat dari indexed db
-            // btnSave.style.display = 'none';
-            save.style.display = 'none';
-            
-            // ambil artikel lalu tampilkan
-            getSavedInfoTeam();
-        } else {
-            var item = getTeamById();
-        }
-     
-        function changeUrl () {
-          const urlParams = window.location.search;
-          const params = new URLSearchParams(urlParams.slice(1));
-          params.append('simpandata', true);
-          window.history.replaceState({}, '', `${location.pathname}?${params}`);
-        }
-
-        save.addEventListener('click', function () {
-          getTeamById().then(squadsave => {
-            saveForLater(squadsave);
-            changeUrl();
-          })
-          btnSave.style.display = 'none';
-        })
         
-      });
+        document.addEventListener("DOMContentLoaded", function() {
+          getTeamById();
+
+          const btnSave = document.querySelector("#save");
+          const urlParams = new URLSearchParams(window.location.search);
+          const isFromSaved = urlParams.get("saved");
+          var item = getTeamById();
+          var save = document.getElementById("save");
+
+          if (isFromSaved) {
+              save.style.display = 'none';
+              getSavedInfoTeam();
+          } else {
+              var item = getTeamById();
+          }
+
+          function changeUrl () {
+            const urlParams = window.location.search;
+            const params = new URLSearchParams(urlParams.slice(1));
+            params.append('simpandata', true);
+            window.history.replaceState({}, '', `${location.pathname}?${params}`);
+          }
+
+          save.addEventListener('click', function () {
+            getTeamById().then(squadsave => {
+              saveForLater(squadsave);
+              changeUrl();
+            })
+            btnSave.style.display = 'none';
+          })
+          
+        });
     </script>
   </body>
 </html>
