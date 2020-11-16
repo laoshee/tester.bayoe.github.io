@@ -4,8 +4,8 @@
     "description": "Aplication information Football",
     "start_url": "/index.html",
     "display": "standalone",
-    "background_color": "#00897B",
-    "theme_color": "#00897B",
+    "background_color": "#ff4242",
+    "theme_color": "#ff4242",
     "icons": [
         {
             "src": "images/football-icon.png",

@@ -1,10 +1,8 @@
 const base_url = 'https://api.football-data.org/v2/';
 const api = 'b7fdf68820ce4d82bf06bfb3e6f13808';
 const id_liga = 2002;
-// const enpoint_teamkompetitions = `${base_url}players/${id_liga}/matches?status=FINISHED`;
 const enpoint_kompetisi = `${base_url}competitions/${id_liga}/standings/`;
 const enpoint_team = `${base_url}teams/`;
-// const enpoint_schedule = `${base_url}teams/${id}/matches?status=SCHEDULED`;
  
 const fetchAPI = (url) => fetch(url, {
   headers: {
@@ -74,7 +72,6 @@ const fetchAPI = (url) => fetch(url, {
     let loadingpage = document.getElementsByClassName('loading-page')[0].style.display = 'none';
 
     data.standings[0].table.forEach((standing) => {
-    // const newArray = data.standings[0].stage.concat(standing);
       standings += `
         <tr>
           <td class="center">${standing.position}</td>
@@ -116,7 +113,6 @@ const fetchAPI = (url) => fetch(url, {
       </div>
       `;
   }
-
 
   function getTeamById() {
     return new Promise((resolve, reject) => {
@@ -262,7 +258,6 @@ const fetchAPI = (url) => fetch(url, {
     });
   }
 
-
   function getTeamAll() {
     if ('caches' in window) {
       caches.match(enpoint_team).then((response) => {
@@ -283,21 +278,15 @@ const fetchAPI = (url) => fetch(url, {
 
   function showTeams(data) {
     // console.log(data);
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
     let tampilHTML,tampildetail = '';
     let standingElement = document.getElementById('team-content');
     let loadingpage = document.getElementsByClassName('loading-page')[0].style.display = 'none';
 
     data.teams.forEach((tampils) => {
-    // const newArray = data.standings[0].stage.concat(standing);
       tampilHTML += `
         <option value='${tampils.id}'>${tampils.name}</option>
       `;
     });
-  //   standingElement.innerHTML = tampilHTML;
-
-  // }
     standingElement.innerHTML = `
     <div class="card hoverable" style="padding-left: 20px; padding-right: 20px; margin-top: 30px;" >
     <h5> <p class="center"> INFORMATION SCHEDULED TEAM </p></h5>
@@ -398,4 +387,4 @@ const fetchAPI = (url) => fetch(url, {
           </div>
         </div>
         `;
- }
+  }
