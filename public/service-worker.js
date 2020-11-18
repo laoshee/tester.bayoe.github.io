@@ -7,6 +7,7 @@ else
 
 workbox.precaching.precacheAndRoute([
     { url: 'index.html', revision: '2' },
+    { url: 'team.html', revision: '1' },
     { url: 'nav.html', revision: '2' },
     { url: 'jadwal.html', revision: '1' },
     { url: 'css/materialize.min.css', revision: '1' },
@@ -18,21 +19,17 @@ workbox.precaching.precacheAndRoute([
     { url: 'js/notofication.js', revision: '1' },
     { url: 'manifest.json', revision: '2' },
     { url: 'push.js', revision: '1' },
-]);
+  ], {
+  ignoreUrlParametersMatching: [/.*/]
+});
 
 workbox.routing.registerRoute(
-  new RegExp('pages/'),
+  new RegExp('/'),
   workbox.strategies.staleWhileRevalidate({
       cacheName: 'pages',
   }),
 );
 
-workbox.routing.registerRoute(
-  new RegExp('team.html'),
-  workbox.strategies.staleWhileRevalidate({
-      cacheName: 'team',
-  }),
-);
 
 workbox.routing.registerRoute(
   /\.(?:png|gif|jpg|jpeg|svg)$/,
